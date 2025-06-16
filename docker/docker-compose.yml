@@ -7,7 +7,7 @@ services:
     environment:
       POSTGRES_USER: flightuser
       POSTGRES_PASSWORD: flightpass
-      POSTGRES_DB: flight_booking
+      POSTGRES_DB: flight_db
     ports:
       - "5432:5432"
     volumes:
