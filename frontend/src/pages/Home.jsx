@@ -1,5 +1,4 @@
 import FlightSearch from '../components/FlightSearch';
-import Layout from '../components/Layout';
 
 const Home = () => (
   <Layout>
