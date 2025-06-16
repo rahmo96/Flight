@@ -1,12 +1,10 @@
 import { useEffect, useState } from 'react';
-import { useLocation, Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import api from '../services/api';
 
-function useQuery() {
-  return new URLSearchParams(useLocation().search);
-}
+const useQuery = () => new URLSearchParams(useLocation().search);
 
-function FlightList() {
+const FlightList = () => {
   const [flights, setFlights] = useState([]);
   const query = useQuery();
 
@@ -25,14 +23,30 @@ function FlightList() {
 
   return (
     <div>
-      {flights.map((flight) => (
-        <div key={flight.id} className="border p-4 m-2">
-          <h3>{flight.departure} ➡️ {flight.destination}</h3>
-          <Link to={`/booking/${flight.id}`} className="text-blue-500">Book Now</Link>
-        </div>
-      ))}
+      {flights.length > 0 ? (
+        flights.map((flight) => (
+          <div key={flight.id} className="border p-2 my-2">
+            <h3 className="font-semibold">
+              {flight.departure} ➡️ {flight.destination}
+            </h3>
+            <p>
+              Departure: {new Date(flight.departureTime).toLocaleString()}
+              <br />
+              Arrival: {new Date(flight.arrivalTime).toLocaleString()}
+            </p>
+            <Link
+              className="text-blue-600"
+              to={`/booking/${flight.id}`}
+            >
+              Book this flight
+            </Link>
+          </div>
+        ))
+      ) : (
+        <p>No flights found.</p>
+      )}
     </div>
   );
-}
+};
 
 export default FlightList;
