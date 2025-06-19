@@ -23,17 +23,27 @@ exports.getBookingById = async (req, res) => {
 
 exports.createBooking = async (req, res) => {
   try {
-    const { flightId, passengerName, passengerEmail } = req.body;
+    const { flight_number, passenger_name, passenger_email } = req.body;
+    
+    if (!flight_number) {
+      return res.status(400).json({ error: 'Flight ID is required' });
+    }
+    
     const booking = await Booking.create({
-      flightId,
-      passengerName,
-      passengerEmail,
+      flight_number: flight_number,
+      passenger_name: passenger_name,
+      passenger_email: passenger_email
+      // booking_date will be automatically set by default
     });
+    
     res.status(201).json(booking);
   } catch (err) {
+    console.error('Booking creation error:', err);
     res.status(500).json({ error: err.message });
   }
 };
+
+
 
 exports.deleteBooking = async (req, res) => {
   try {

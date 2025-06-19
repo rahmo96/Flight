@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import api from '../services/api';
 
-const BookingForm = ({ flightId }) => {
+const BookingForm = ({ flight_number }) => {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [status, setStatus] = useState('');
@@ -9,7 +9,7 @@ const BookingForm = ({ flightId }) => {
   const submitBooking = async () => {
     try {
       await api.post('/bookings', {
-        flightId,
+        flight_number,
         passengerName: name,
         passengerEmail: email,
       });

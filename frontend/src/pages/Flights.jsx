@@ -33,8 +33,9 @@ function Flights() {
   }, [departure, destination, date]);
 
   const handleBooking = (flight) => {
-    navigate(`/booking/${flight.id}`);
+    navigate(`/booking/${flight.flight_number}`);
   };
+
 
   return (
     <div className="min-h-screen bg-slate-100 p-8">

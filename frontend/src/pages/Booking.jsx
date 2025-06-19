@@ -3,7 +3,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
 function Booking() {
-  const { id } = useParams();
+  const { flight_number } = useParams(); // Changed from id to flight_number
   const navigate = useNavigate();
   const [flight, setFlight] = useState(null);
   const [name, setName] = useState('');
@@ -14,7 +14,7 @@ function Booking() {
     const fetchFlight = async () => {
       try {
         const res = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/api/flights`);
-        const found = res.data.find((f) => f.id.toString() === id);
+        const found = res.data.find((f) => f.flight_number.toString() === flight_number);
         setFlight(found);
       } catch (err) {
         console.error('Failed to fetch flight', err);
@@ -22,14 +22,14 @@ function Booking() {
     };
 
     fetchFlight();
-  }, [id]);
+  }, [flight_number]);
 
   const handleBooking = async () => {
     try {
       await axios.post(`${import.meta.env.VITE_BACKEND_URL}/api/bookings`, {
         passenger_name: name,
         passenger_email: email,
-        flight_number: flight.flightNumber,
+        flight_number: flight.flight_number,
       });
       alert('✅ Booking successful!');
       navigate('/');
@@ -38,6 +38,7 @@ function Booking() {
       alert('❌ Booking failed.');
     }
   };
+
 
   if (!flight) return <p className="text-center mt-10">Loading flight info...</p>;
 

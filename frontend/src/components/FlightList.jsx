@@ -34,12 +34,12 @@ const FlightList = () => {
               <br />
               Arrival: {new Date(flight.arrivalTime).toLocaleString()}
             </p>
-            <Link
-              className="text-blue-600"
-              to={`/booking/${flight.id}`}
-            >
-              Book this flight
-            </Link>
+          <Link
+            className="text-blue-600"
+            to={`/booking/${flight.flight_number}`}
+          >
+            Book this flight
+          </Link>
           </div>
         ))
       ) : (
