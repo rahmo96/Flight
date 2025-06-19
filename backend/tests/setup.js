@@ -1,16 +1,27 @@
-// backend/tests/setup.js
+process.env.NODE_ENV = 'test'; // מוודא שאנחנו במצב טסטים
+
 const { sequelize } = require('../models');
 
-// Global setup
+// הרצה לפני כל הסוויטה
 beforeAll(async () => {
-  // Make sure we're using a test database
-  console.log('Test database URL:', process.env.DATABASE_URL);
+  console.log('🧪 Running in test mode');
   
-  // Sync all models with force: true to create fresh tables
-  await sequelize.sync({ force: true });
+  try {
+    // יוצר את כל הטבלאות מחדש בזיכרון (SQLite)
+    await sequelize.sync({ force: true });
+    console.log('✅ Test database synced');
+  } catch (error) {
+    console.error('❌ Failed to sync test DB:', error);
+    throw error;
+  }
 });
 
-// Global teardown
+// ניקוי וסגירה אחרי כל הטסטים
 afterAll(async () => {
-  await sequelize.close();
+  try {
+    await sequelize.close();
+    console.log('🧹 Test database connection closed');
+  } catch (error) {
+    console.error('❌ Error closing test DB:', error);
+  }
 });
