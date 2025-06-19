@@ -6,9 +6,32 @@ on:
     branches: [ main ]
 
 jobs:
+  test:  # This is an independent job with no dependencies
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v3
+    
+    - name: Set up Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: '18'
+        
+    - name: Install backend dependencies
+      run: cd backend && npm install
+      
+    - name: Run backend tests
+      run: cd backend && npm test
+      
+    - name: Install frontend dependencies
+      run: cd frontend && npm install
+      
+    - name: Run frontend tests
+      run: cd frontend && npm test
+
   deploy:
     runs-on: ubuntu-latest
-    needs: [test-backend, test-frontend]
+    needs: [test]  # This job depends on the test job
     
     steps:
     - uses: actions/checkout@v3
@@ -24,9 +47,4 @@ jobs:
     - name: Build frontend
       run: cd frontend && npm run build
       
-    # Add your deployment steps here depending on where you host the application
-    # For example, deploying to GitHub Pages:
-    - name: Deploy to GitHub Pages
-      uses: JamesIves/github-pages-deploy-action@v4
-      with:
-        folder: frontend/dist
+
