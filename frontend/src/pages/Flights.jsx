@@ -19,7 +19,7 @@ function Flights() {
         const filtered = res.data.filter((f) =>
           (!departure || f.departure.toLowerCase().includes(departure.toLowerCase())) &&
           (!destination || f.destination.toLowerCase().includes(destination.toLowerCase())) &&
-          (!date || f.departureTime.startsWith(date))
+          (!date || f.departure_time.startsWith(date))
         );
         setFlights(filtered);
         setLoading(false);

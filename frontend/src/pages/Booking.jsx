@@ -27,10 +27,9 @@ function Booking() {
   const handleBooking = async () => {
     try {
       await axios.post(`${import.meta.env.VITE_BACKEND_URL}/api/bookings`, {
-        passengerName: name,
-        email,
-        flightNumber: flight.flightNumber,
-        seats,
+        passenger_name: name,
+        passenger_email: email,
+        flight_number: flight.flightNumber,
       });
       alert('✅ Booking successful!');
       navigate('/');

@@ -1,9 +1,15 @@
 const { Flight } = require('../models');
 
 exports.getAllFlights = async (req, res) => {
-  const flights = await Flight.findAll();
-  res.json(flights);
+  try {
+    const flights = await Flight.findAll();
+    res.json(flights);
+  } catch (err) {
+    console.error('Error fetching flights:', err);
+    res.status(500).json({ error: err.message });
+  }
 };
+
 
 exports.createFlight = async (req, res) => {
   const flight = await Flight.create(req.body);

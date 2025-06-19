@@ -22,8 +22,6 @@ services:
       context: ./backend
     ports:
       - "5000:5000"
-    depends_on:
-      - postgres
     environment:
       - DATABASE_URL=postgresql://postgres.enazhbswgifqltwawujh:8CyrvMv8dlVFj6HQ@aws-0-eu-north-1.pooler.supabase.com:5432/postgres
       - SECRET_KEY=8CyrvMv8dlVFj6HQ
@@ -31,37 +29,4 @@ services:
       - ./backend:/usr/src/app
       - /usr/src/app/node_modules
 
-  # PostgreSQL database
-  postgres:
-    container_name: flight-db
-    image: postgres:16
-    restart: always
-    environment:
-      POSTGRES_USER: flightuser
-      POSTGRES_PASSWORD: flightpass
-      POSTGRES_DB: flight_db
-    ports:
-      - "5432:5432"
-    volumes:
-      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
-      - postgres-data:/var/lib/postgresql/data
 
-  # pgAdmin for database management
-  pgadmin:
-    container_name: pgadmin4
-    image: dpage/pgadmin4
-    restart: always
-    environment:
-      PGADMIN_DEFAULT_EMAIL: admin@admin.com
-      PGADMIN_DEFAULT_PASSWORD: root
-    ports:
-      - "8081:80"
-    depends_on:
-      - postgres
-    volumes:
-      - pgadmin-data:/var/lib/pgadmin
-
-# Define named volumes for persistent data
-volumes:
-  postgres-data:
-  pgadmin-data:

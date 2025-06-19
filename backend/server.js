@@ -8,7 +8,16 @@ const app = express();
 app.use(express.json());
 app.use(cors());
 
-app.use('/api/flights', flightRoutes);
+app.use('/api/flights', (req, res, next) => {
+  console.log('Flight API request received');
+  next();
+}, flightRoutes);
+
+// General error handler
+app.use((err, req, res, next) => {
+  console.error('Server error:', err);
+  res.status(500).json({ error: err.message });
+});
 app.use('/api/bookings', bookingRoutes);
 
 const PORT = process.env.PORT || 5000;
