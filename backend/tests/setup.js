@@ -2,7 +2,6 @@
 const { sequelize } = require('../models');
 
 beforeAll(async () => {
-  // Connect to test database or use in-memory database
   await sequelize.sync({ force: true });
 });
 

@@ -1,14 +1,25 @@
+// backend/models/index.js
 const { Sequelize, DataTypes } = require('sequelize');
 
-const sequelize = new Sequelize(process.env.DATABASE_URL, {
-  dialect: 'postgres',
-  dialectOptions: {
-    ssl: {
-      require: true,
-      rejectUnauthorized: false,
-    },
-  },
-});
+// Determine if we're in test mode
+const isTest = process.env.NODE_ENV === 'test';
+
+// Use different connection options based on environment
+const sequelize = isTest 
+  ? new Sequelize({
+      dialect: 'sqlite',
+      storage: ':memory:', // Use in-memory SQLite for testing
+      logging: false
+    })
+  : new Sequelize(process.env.DATABASE_URL, {
+      dialect: 'postgres',
+      dialectOptions: {
+        ssl: {
+          require: true,
+          rejectUnauthorized: false,
+        },
+      },
+    });
 
 const db = {};
 
