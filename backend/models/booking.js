@@ -6,7 +6,7 @@ module.exports = (sequelize, DataTypes) => {
       autoIncrement: true
     },
     flight_number: {
-      type: DataTypes.INTEGER,
+      type: DataTypes.STRING,
       allowNull: false,
       references: {
         model: 'flights',
@@ -29,6 +29,13 @@ module.exports = (sequelize, DataTypes) => {
     tableName: 'bookings',
     timestamps: false
   });
+
+  Booking.associate = (models) => {
+    Booking.belongsTo(models.Flight, {
+      foreignKey: 'flight_number',
+      targetKey: 'flight_number'
+    });
+  };
 
   return Booking;
 };

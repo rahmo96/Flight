@@ -10,8 +10,8 @@ module.exports = (sequelize, DataTypes) => {
     arrival_time: DataTypes.DATE,
     price: DataTypes.FLOAT,
   }, {
-    tableName: 'flights',    // טבלת Supabase בפועל
-    timestamps: false        // אם אין createdAt/updatedAt
+    tableName: 'flights',
+    timestamps: false
   });
 
   Flight.associate = (models) => {
