@@ -32,9 +32,11 @@ describe('Booking API', () => {
   it('should return all bookings', async () => {
     const res = await request(app).get('/api/bookings');
     expect(res.statusCode).toEqual(200);
+    console.log('📦 BOOKINGS:', res.body); // הוסף זמנית!
     expect(res.body.length).toEqual(1);
     expect(res.body[0].passenger_name).toBe('Test User');
   });
+
 
   it('should create a new booking', async () => {
     const newBooking = {
