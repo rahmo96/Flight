@@ -1,34 +1,30 @@
-// backend/models/index.js
-const { Sequelize, DataTypes } = require('sequelize');
+const fs = require('fs');
+const path = require('path');
+const Sequelize = require('sequelize');
+const basename = path.basename(__filename);
+const env = process.env.NODE_ENV || 'development';
+const config = require(__dirname + '/../config/config.js')[env];
 
-// Determine if we're in test mode
-const isTest = process.env.NODE_ENV === 'test';
-
-// Use different connection options based on environment
-const sequelize = isTest 
-  ? new Sequelize({
-      dialect: 'sqlite',
-      storage: ':memory:', // Use in-memory SQLite for testing
-      logging: false
-    })
-  : new Sequelize(process.env.DATABASE_URL, {
-      dialect: 'postgres',
-      dialectOptions: {
-        ssl: {
-          require: true,
-          rejectUnauthorized: false,
-        },
-      },
-    });
+let sequelize;
+if (config.use_env_variable) {
+  sequelize = new Sequelize(process.env[config.use_env_variable], config);
+} else {
+  sequelize = new Sequelize(config);
+}
 
 const db = {};
 
-db.Flight = require('./flight')(sequelize, DataTypes);
-db.Booking = require('./booking')(sequelize, DataTypes);
+// Load models
+fs.readdirSync(__dirname)
+  .filter(file => file !== basename && file.endsWith('.js'))
+  .forEach(file => {
+    const model = require(path.join(__dirname, file))(sequelize, Sequelize.DataTypes);
+    db[model.name] = model;
+  });
 
-// Define associations if needed
-db.Booking.belongsTo(db.Flight, { foreignKey: 'flight_number' });
-db.Flight.hasMany(db.Booking, { foreignKey: 'flight_number' });
+Object.keys(db).forEach(modelName => {
+  if (db[modelName].associate) db[modelName].associate(db);
+});
 
 db.sequelize = sequelize;
 db.Sequelize = Sequelize;
