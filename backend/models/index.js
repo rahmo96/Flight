@@ -11,7 +11,7 @@ const sequelize = isTest
       storage: ':memory:', // Use in-memory SQLite for testing
       logging: false
     })
-  : new Sequelize(process.env.DATABASE_URL, {
+  : new Sequelize(process.env.DATABASE_URI, {
       dialect: 'postgres',
       dialectOptions: {
         ssl: {
