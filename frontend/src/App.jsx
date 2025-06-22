@@ -4,15 +4,15 @@ import Flights from './pages/Flights';
 import Booking from './pages/Booking';
 function App() {
   return (
-    <BrowserRouter>
-      <Routes>
-        <Route path="/" element={<Home />} />
+      <BrowserRouter>
+          <Routes>
+            <Route path="/" element={<Home />} />
         <Route path="/" element={<Home />} />
         <Route path="/index" element = {<Home />} />
-        <Route path="/flights" element={<Flights />} />
-        <Route path="/booking/:flight_number" element={<Booking />} />
-      </Routes>
-    </BrowserRouter>
+            <Route path="/flights" element={<Flights />} />
+            <Route path="/booking/:flight_number" element={<Booking />} />
+          </Routes>
+      </BrowserRouter>
   );
 }
 

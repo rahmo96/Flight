@@ -3,6 +3,7 @@ const cors = require('cors');
 require('dotenv').config();
 const flightRoutes = require('./routes/flights');
 const bookingRoutes = require('./routes/bookings');
+const userRoutes = require('./routes/users');
 
 const app = express();
 app.use(express.json());
@@ -14,6 +15,8 @@ app.use('/api/flights', (req, res, next) => {
 }, flightRoutes);
 
 app.use('/api/bookings', bookingRoutes);
+app.use('/api/users', userRoutes);
+
 
 // General error handler
 app.use((err, req, res, next) => {
