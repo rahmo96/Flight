@@ -24,6 +24,11 @@ module.exports = (sequelize, DataTypes) => {
     booking_date: {
       type: DataTypes.DATE,
       defaultValue: DataTypes.NOW
+    },
+    ticket_sold: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      defaultValue: 1
     }
   }, {
     tableName: 'bookings',

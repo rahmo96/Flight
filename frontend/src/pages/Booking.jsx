@@ -30,6 +30,7 @@ function Booking() {
         passenger_name: name,
         passenger_email: email,
         flight_number: flight.flight_number,
+        ticket_sold: parseInt(seats)  // Pass the number of tickets
       });
       alert('✅ Booking successful!');
       navigate('/');
@@ -40,21 +41,21 @@ function Booking() {
   };
 
 
+
   if (!flight) return <p className="text-center mt-10">Loading flight info...</p>;
 
   return (
     <div className="min-h-screen bg-gray-100 p-6 flex flex-col items-center">
       <div className="bg-white rounded-lg shadow-md max-w-xl w-full p-6">
         <h1 className="text-2xl font-bold mb-4 text-blue-800">Booking Flight: {flight.flightNumber}</h1>
-
         <div className="text-gray-600 mb-6">
           <div><strong>From:</strong> {flight.departure}</div>
           <div><strong>To:</strong> {flight.destination}</div>
-          <div><strong>Departure:</strong> {new Date(flight.departureTime).toLocaleString()}</div>
-          <div><strong>Arrival:</strong> {new Date(flight.arrivalTime).toLocaleString()}</div>
+          <div><strong>Departure:</strong> {new Date(flight.departure_time).toLocaleString()}</div>
+          <div><strong>Arrival:</strong> {new Date(flight.arrival_time).toLocaleString()}</div>
           <div><strong>Price per seat:</strong> ${flight.price}</div>
+          <div><strong>Available seats:</strong> {flight.available_seats}</div>
         </div>
-
         <div className="space-y-4">
           <input
             type="text"
@@ -71,12 +72,13 @@ function Booking() {
             className="w-full p-3 border rounded"
           />
           <input
-            type="number"
-            min="1"
-            value={seats}
-            onChange={(e) => setSeats(e.target.value)}
-            className="w-full p-3 border rounded"
-          />
+              type="number"
+              min="1"
+              max={flight.available_seats}
+              value={seats}
+              onChange={(e) => setSeats(Math.min(parseInt(e.target.value), flight.available_seats))}
+              className="w-full p-3 border rounded"
+            />
 
           <div className="text-right text-lg font-semibold text-green-700">
             Total: ${(seats * flight.price).toFixed(2)}
