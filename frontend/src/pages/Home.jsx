@@ -28,19 +28,21 @@ function Home() {
         <div className="bg-white rounded-lg shadow-lg p-6 mb-10">
           <form onSubmit={handleSearch} className="flex flex-wrap gap-4">
             <div className="flex-1 min-w-[200px]">
-              <label className="block text-gray-700 mb-2">Departure</label>
-              <input
-                type="text"
-                className="w-full p-3 border border-gray-300 rounded"
-                placeholder="City or airport"
-                value={departure}
-                onChange={(e) => setDeparture(e.target.value)}
-                required
-              />
+            <label htmlFor="departure-input" className="block text-gray-700 mb-2">Departure</label>
+            <input
+              id="departure-input"
+              type="text"
+              className="w-full p-3 border border-gray-300 rounded"
+              placeholder="City or airport"
+              value={departure}
+              onChange={(e) => setDeparture(e.target.value)}
+              required
+            />
             </div>
             <div className="flex-1 min-w-[200px]">
-              <label className="block text-gray-700 mb-2">Destination</label>
-              <input
+            <label htmlFor="destination-input" className="block text-gray-700 mb-2">Destination</label>
+            <input
+                id="destination-input"
                 type="text"
                 className="w-full p-3 border border-gray-300 rounded"
                 placeholder="City or airport"
@@ -50,8 +52,9 @@ function Home() {
               />
             </div>
             <div className="flex-1 min-w-[200px]">
-              <label className="block text-gray-700 mb-2">Date</label>
+              <label htmlFor="date-input" className="block text-gray-700 mb-2">Date</label>
               <input
+                id="date-input"
                 type="date"
                 className="w-full p-3 border border-gray-300 rounded"
                 value={date}
@@ -60,8 +63,9 @@ function Home() {
               />
             </div>
             <div className="flex-1 min-w-[200px]">
-              <label className="block text-gray-700 mb-2">Passengers</label>
-              <input
+            <label htmlFor="passengers-input" className="block text-gray-700 mb-2">Passengers</label>
+            <input
+                id="passengers-input"
                 type="number"
                 min="1"
                 max="10"

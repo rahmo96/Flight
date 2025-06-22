@@ -1,86 +1,113 @@
-import {
-  render,
-  screen,
-  fireEvent,
-  waitFor,
-} from '@testing-library/react';
-import { MemoryRouter, Routes, Route } from 'react-router-dom';
-import { describe, it, expect, vi, beforeEach } from 'vitest';
+import { render, screen, fireEvent, waitFor } from '@testing-library/react';
+import { BrowserRouter } from 'react-router-dom';
+import { vi } from 'vitest';
+import axios from 'axios';
 import Booking from './Booking';
 
-/* ---------- axios mock ---------- */
-vi.mock('axios', () => {
-  const instance = {
-    get:  vi.fn(),
-    post: vi.fn(() => Promise.resolve({ data: { success: true } })),
+// Mock axios
+vi.mock('axios');
+
+// Mock useParams and useNavigate
+vi.mock('react-router-dom', async () => {
+  const actual = await vi.importActual('react-router-dom');
+  return {
+    ...actual,
+    useParams: () => ({ flight_number: 'FL123' }),
+    useNavigate: () => vi.fn()
   };
-  return { default: instance };
 });
-import axios from 'axios';
 
-/* helper – render /booking/FL123 */
-const renderWithRoute = () =>
-  render(
-    <MemoryRouter initialEntries={['/booking/FL123']}>
-      <Routes>
-        <Route path="/booking/:flight_number" element={<Booking />} />
-      </Routes>
-    </MemoryRouter>
-  );
-
-const alertSpy = vi.spyOn(window, 'alert').mockImplementation(() => {});
-beforeEach(() => vi.clearAllMocks());
-
-describe('Booking Page', () => {
+describe('Booking component', () => {
   const mockFlight = {
-    id: 1,
-    flight_number: 'FL123',  // ← לשימוש ב-find()
-    flightNumber:  'FL123',  // ← לשימוש ב-UI
-    departure: 'Paris',
-    destination: 'Rome',
-    departureTime: '2025-07-01T09:00:00Z',
-    arrivalTime:   '2025-07-01T12:00:00Z',
-    price: 150,
+    flight_number: 'FL123',
+    flightNumber: 'FL123', // for display in title
+    departure: 'New York',
+    destination: 'London',
+    departure_time: '2023-10-15T10:00:00Z',
+    arrival_time: '2023-10-15T22:00:00Z',
+    price: 450,
+    available_seats: 45
   };
 
-  it('displays flight details after data loads', async () => {
-    axios.get.mockResolvedValueOnce({ data: [mockFlight] });
+  beforeEach(() => {
+    axios.get.mockResolvedValue({ data: [mockFlight] });
+    axios.post.mockResolvedValue({ data: { id: 1 } });
 
-    renderWithRoute();
-
-    /* מחכים שתוצג הכותרת עם מספר הטיסה */
-    expect(await screen.findByText(/fl123/i)).toBeInTheDocument();
-    expect(screen.getByText(/paris/i)).toBeInTheDocument();
-    expect(screen.getByText(/rome/i)).toBeInTheDocument();
+    window.alert = vi.fn();
   });
 
-  it('submits booking successfully', async () => {
-    axios.get.mockResolvedValueOnce({ data: [mockFlight] });
+  test('renders flight details and booking form', async () => {
+    render(
+      <BrowserRouter>
+        <Booking />
+      </BrowserRouter>
+    );
 
-    renderWithRoute();
+    expect(screen.getByText('Loading flight info...')).toBeInTheDocument();
 
-    fireEvent.change(await screen.findByPlaceholderText(/full name/i), {
-      target: { value: 'John Doe' },
+    await waitFor(() => {
+      expect(screen.getByText(/Booking Flight: FL123/i)).toBeInTheDocument();
+      
+      // Using function matcher to handle <strong> tag splitting text
+      expect(screen.getByText((_, el) => el?.textContent === 'From: New York')).toBeInTheDocument();
+      expect(screen.getByText((_, el) => el?.textContent === 'To: London')).toBeInTheDocument();
+      expect(screen.getByText((_, el) => el?.textContent === 'Price per seat: $450')).toBeInTheDocument();
     });
-    fireEvent.change(await screen.findByPlaceholderText(/email address/i), {
-      target: { value: 'john@example.com' },
+
+    expect(screen.getByPlaceholderText('Full Name')).toBeInTheDocument();
+    expect(screen.getByPlaceholderText('Email address')).toBeInTheDocument();
+    expect(screen.getByText('Confirm Booking')).toBeInTheDocument();
+  });
+
+  test('updates total price when changing seats', async () => {
+    render(
+      <BrowserRouter>
+        <Booking />
+      </BrowserRouter>
+    );
+
+    await waitFor(() => {
+      expect(screen.getByText('Total: $450.00')).toBeInTheDocument();
     });
 
-    fireEvent.click(screen.getByText(/confirm booking/i));
+    const seatsInput = screen.getByRole('spinbutton');
+    fireEvent.change(seatsInput, { target: { value: '3' } });
 
-    await waitFor(() =>
+    expect(screen.getByText('Total: $1350.00')).toBeInTheDocument();
+  });
+
+  test('submits booking successfully', async () => {
+    render(
+      <BrowserRouter>
+        <Booking />
+      </BrowserRouter>
+    );
+
+    await waitFor(() => {
+      expect(screen.getByPlaceholderText('Full Name')).toBeInTheDocument();
+    });
+
+    fireEvent.change(screen.getByPlaceholderText('Full Name'), {
+      target: { value: 'John Doe' }
+    });
+
+    fireEvent.change(screen.getByPlaceholderText('Email address'), {
+      target: { value: 'john@example.com' }
+    });
+
+    fireEvent.click(screen.getByText('Confirm Booking'));
+
+    await waitFor(() => {
       expect(axios.post).toHaveBeenCalledWith(
-        expect.stringMatching(/\/api\/bookings$/),
+        expect.any(String),
         {
-          passenger_name:  'John Doe',
+          passenger_name: 'John Doe',
           passenger_email: 'john@example.com',
-          flight_number:   'FL123',
+          flight_number: 'FL123',
+          ticket_sold: 1
         }
-      )
-    );
-
-    expect(alertSpy).toHaveBeenCalledWith(
-      expect.stringMatching(/booking successful/i)
-    );
+      );
+      expect(window.alert).toHaveBeenCalledWith('✅ Booking successful!');
+    });
   });
 });
