@@ -9,6 +9,14 @@ module.exports = (sequelize, DataTypes) => {
     departure_time: DataTypes.DATE,
     arrival_time: DataTypes.DATE,
     price: DataTypes.FLOAT,
+    capacity: {
+      type: DataTypes.INTEGER,
+      defaultValue: 100
+    },
+    available_seats: {
+      type: DataTypes.INTEGER,
+      defaultValue: 100
+    }
   }, {
     tableName: 'flights',
     timestamps: false
