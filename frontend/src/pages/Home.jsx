@@ -9,6 +9,7 @@ function Home() {
 
   const handleSearch = () => {
     navigate(`/flights?departure=${departure}&destination=${destination}&date=${date}`);
+    console.log("Hi");
   };
 
   return (

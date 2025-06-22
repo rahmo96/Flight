@@ -3,6 +3,8 @@ import { useSearchParams, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
 function Flights() {
+  console.log("🚀 Flight.jsx loaded");
+
   const [flights, setFlights] = useState([]);
   const [loading, setLoading] = useState(true);
   const [searchParams] = useSearchParams();
@@ -48,13 +50,13 @@ function Flights() {
       ) : (
         <div className="grid gap-6 max-w-4xl mx-auto">
           {flights.map((f) => (
-            <div key={f.id} className="bg-white rounded-lg shadow p-6 flex justify-between items-center">
+            <div key={f.flight_number} className="bg-white rounded-lg shadow p-6 flex justify-between items-center">
               <div>
                 <div className="text-xl font-semibold text-blue-800">
                   {f.departure} ✈️ {f.destination}
                 </div>
                 <div className="text-sm text-gray-600">
-                  {new Date(f.departureTime).toLocaleString()} → {new Date(f.arrivalTime).toLocaleString()}
+                  {new Date(f.departure_time).toLocaleString()} → {new Date(f.arrival_time).toLocaleString()}
                 </div>
                 <div className="text-sm text-gray-500 mt-1">Flight: {f.flightNumber}</div>
               </div>

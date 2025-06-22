@@ -50,8 +50,8 @@ function Booking() {
         <div className="text-gray-600 mb-6">
           <div><strong>From:</strong> {flight.departure}</div>
           <div><strong>To:</strong> {flight.destination}</div>
-          <div><strong>Departure:</strong> {new Date(flight.departureTime).toLocaleString()}</div>
-          <div><strong>Arrival:</strong> {new Date(flight.arrivalTime).toLocaleString()}</div>
+          <div><strong>Departure:</strong> {new Date(flight.departure_time).toLocaleString()}</div>
+          <div><strong>Arrival:</strong> {new Date(flight.arrival_time).toLocaleString()}</div>
           <div><strong>Price per seat:</strong> ${flight.price}</div>
         </div>
 

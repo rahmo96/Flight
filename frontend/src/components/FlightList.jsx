@@ -9,19 +9,30 @@ const FlightList = () => {
   const query = useQuery();
 
   useEffect(() => {
+    console.log("useeffect");
     const fetchFlights = async () => {
-      const res = await api.get('/flights', {
-        params: {
-          departure: query.get('departure'),
-          destination: query.get('destination'),
-        },
-      });
-      setFlights(res.data);
+      try {
+        const res = await api.get('/flights', {
+          params: {
+            departure: query.get('departure'),
+            destination: query.get('destination'),
+          },
+        });
+        console.log('Flights from API:', res.data);
+        setFlights(res.data);
+        console.log(flights.departureTime);
+        console.log(flights.arrivalTime);
+      console.log(flights.departureTime)
+      console.log(flights.arrivalTime)
+      } catch (error) {
+        console.error('Error fetching flights:', error);
+      }
     };
     fetchFlights();
-  }, [query]);
+  }, [query]);  
 
   return (
+
     <div>
       {flights.length > 0 ? (
         flights.map((flight) => (
