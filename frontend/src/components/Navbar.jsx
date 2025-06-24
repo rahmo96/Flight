@@ -79,6 +79,7 @@ function Navbar() {
           
           {isLoggedIn ? (
             <div className="flex items-center space-x-4">
+              <Link to="/PersonalArea" className="hover:underline">Personal Area</Link>
               <span>Welcome, {user?.username}</span>
               <button 
                 onClick={handleLogout}

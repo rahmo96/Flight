@@ -94,6 +94,7 @@ function Layout({ children }) {
             {isLoggedIn ? (
               <div className="flex items-center space-x-2">
                 <span>Hello, {currentUser?.first_name || 'Guest'}</span>
+                <Link to="/personalarea" className="hover:underline">Personal Area</Link>
                 <button 
                   onClick={handleLogout}
                   className="bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded"

@@ -14,4 +14,7 @@ router.post('/', bookingsController.createBooking);
 // Delete a booking
 router.delete('/:id', bookingsController.deleteBooking);
 
+//Get all users bookings
+router.get('/:email', bookingsController.getBookingByEmail);
+
 module.exports = router;

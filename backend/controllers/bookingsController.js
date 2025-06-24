@@ -10,6 +10,18 @@ exports.getAllBookings = async (req, res) => {
   }
 };
 
+exports.getBookingByEmail = async(req,res) => {
+  try{
+    const userBooking = await Booking.findByEmail(req.params.email, {include: Flight});
+    if(!userBooking){
+      return res.status(404).json({error: 'User booking not found'})
+    }
+    res.json(userBooking);
+  }catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};
+
 exports.getBookingById = async (req, res) => {
   try {
     const booking = await Booking.findByPk(req.params.id, { include: Flight });
