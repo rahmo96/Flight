@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import axios from 'axios';
+import Layout from '../components/Layout';
 
 function PersonalArea() {
   const [userBooking, setUserBooking] = useState([]);
@@ -44,6 +45,7 @@ function PersonalArea() {
     return <p className="text-center mt-10">No bookings flight found.</p>;
 
   return (
+    <Layout>
     <div className="container mx-auto py-8">
       <h2 className="text-2xl font-bold mb-6">My Bookings</h2>
       <div className="grid gap-4">
@@ -65,6 +67,7 @@ function PersonalArea() {
         ))}
       </div>
     </div>
+    </Layout>
   );
 }
 
