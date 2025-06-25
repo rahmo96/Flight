@@ -10,6 +10,19 @@ exports.getAllBookings = async (req, res) => {
   }
 };
 
+exports.getBookingByEmail = async(req,res) => {
+  try{
+    const userBooking = await Booking.findAll({
+      where: { passenger_email: req.params.email },
+      include: Flight
+    });
+
+    res.json(userBooking);
+  }catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};
+
 exports.getBookingById = async (req, res) => {
   try {
     const booking = await Booking.findByPk(req.params.id, { include: Flight });
