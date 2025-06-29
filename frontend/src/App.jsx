@@ -2,7 +2,7 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Home from './pages/Home';
 import Flights from './pages/Flights';
 import Booking from './pages/Booking';
-import PersonalArea from './pages/PersonalArea'
+import MyBookings from './pages/MyBookings'
 function App() {
   return (
       <BrowserRouter>
@@ -12,7 +12,7 @@ function App() {
             <Route path="/index" element = {<Home />} />
             <Route path="/flights" element={<Flights />} />
             <Route path="/booking/:flight_number" element={<Booking />} />
-            <Route path="/personalarea" element={<PersonalArea />}/>
+            <Route path="/MyBookings" element={<MyBookings />}/>
           </Routes>
       </BrowserRouter>
   );
