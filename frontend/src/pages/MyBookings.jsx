@@ -46,9 +46,9 @@ function MyBookings() {
     fetchBookings();
   };
 
-  if (loading) return <p className="text-center mt-10">Loading...</p>;
+  if (loading) return <Layout><p className="text-center mt-10 text-black">Loading...</p>;</Layout>
   if (!userBooking || userBooking.length === 0)
-    return <p className="text-center mt-10">No bookings flight found.</p>;
+    return <Layout><p className="text-center mt-10 text-black">No bookings flight found.</p>;</Layout>
 
   return (
     <Layout>

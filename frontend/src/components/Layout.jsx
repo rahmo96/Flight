@@ -85,17 +85,17 @@ function Layout({ children }) {
       {/* Header */}
       <header className="bg-blue-600 text-white p-4 shadow">
         <div className="container mx-auto flex justify-between items-center">
-          <h1 className="text-xl font-bold">
+          <h1 className="text-xl font-bold text-black">
             <Link to="/">FlightBooker</Link>
           </h1>
           <nav className="flex items-center space-x-4">
-            <Link to="/" className="hover:underline">Home</Link>
-            <Link to="/flights" className="hover:underline">Flights</Link>
+            <Link to="/" className="hover:underline text-black">Home</Link>
+            <Link to="/flights" className="hover:underline text-black">Flights</Link>
             
             {isLoggedIn ? (
               <div className="flex items-center space-x-2">
                 <span>Hello, {currentUser?.first_name || 'Guest'}</span>
-                <Link to="/MyBookings" className="hover:underline">My Bookings</Link>
+                <Link to="/MyBookings" className="hover:underline text-black">My Bookings</Link>
                 <button 
                   onClick={handleLogout}
                   className="bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded"
@@ -215,7 +215,7 @@ function Layout({ children }) {
                 />
               </div>
               <div className="mb-4">
-                <label className="block text-gray-700 mb-2">Last Name:</label>
+                <label className="block text-gray-700 mb-2 text-black">Last Name:</label>
                 <input
                   type="text"
                   className="w-full p-2 border rounded"
