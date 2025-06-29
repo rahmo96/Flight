@@ -138,12 +138,11 @@ exports.deleteBooking = async (req, res) => {
       transaction: t 
     });
     
-    if (flight) {
-      await flight.update(
-        { available_seats: flight.available_seats + 1 },
-        { transaction: t }
-      );
-    }
+    await flight.update(
+      { available_seats: flight.available_seats + booking.ticket_sold },
+      { transaction: t }
+    );
+
     
     await booking.destroy({ transaction: t });
     await t.commit();
