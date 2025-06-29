@@ -1,9 +1,10 @@
 import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import Layout from '../components/Layout';
 
 function Booking() {
-  const { flight_number } = useParams(); // Changed from id to flight_number
+  const { flight_number } = useParams();
   const navigate = useNavigate();
   const [flight, setFlight] = useState(null);
   const [name, setName] = useState('');
@@ -43,8 +44,10 @@ function Booking() {
 
 
   if (!flight) return <p className="text-center mt-10">Loading flight info...</p>;
+  
 
   return (
+    <Layout>
     <div className="min-h-screen bg-gray-100 p-6 flex flex-col items-center">
       <div className="bg-white rounded-lg shadow-md max-w-xl w-full p-6">
         <h1 className="text-2xl font-bold mb-4 text-blue-800">Booking Flight: {flight.flightNumber}</h1>
@@ -93,6 +96,7 @@ function Booking() {
         </div>
       </div>
     </div>
+    </Layout>
   );
 }
 
