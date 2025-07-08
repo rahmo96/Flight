@@ -19,7 +19,8 @@ The project is organized as a monorepo with separate frontend and backend applic
 
 ```
 
-```Flight/
+```
+Flight/
 ├── backend/
 │   ├── config/
 │   ├── controllers/
