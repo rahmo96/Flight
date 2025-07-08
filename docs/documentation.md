@@ -1,18 +1,3 @@
-מצוין – נעשה **הכל מסודר** שלב אחר שלב:
-
-אני אתן לך כאן:
-✅ קובץ Markdown מוכן להעתקה.
-✅ תרשים ארכיטקטורה ב־Markdown (שאפשר לשלב גם בציור גרפי).
-✅ דוגמאות סקריפטים ל־Ansible ו־Terraform (ל־Extra Credit).
-✅ בדיקת הגהה כוללת על התוכן.
-
----
-
-## 📁 1. קובץ Markdown מוכן לשימוש
-
-הנה תוכן מלא של קובץ `documentation.md` (הכי נקי, עם כותרות מסודרות):
-
----
 
 ```markdown
 # ✈️ Flight Booking System – Full Documentation
