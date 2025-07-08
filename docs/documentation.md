@@ -1,11 +1,14 @@
-Certainly! Here’s a comprehensive documentation template for your Flight Booking System project, tailored to your requirements and based on your current codebase.
 ---
 # Flight Booking System Documentation
+
 ## Table of Contents
-1. [Project Structure and Design](null)
-2. [CI/CD Pipeline Setup](null)
-3. [Docker and Environment Configuration](null)
-4. [Deployment Steps and Scaling](null)
+1. [Project Structure and Design](#project-structure-and-design)
+2. [CI/CD Pipeline Setup](#cicd-pipeline-setup)
+3. [Docker and Environment Configuration](#docker-and-environment-configuration)
+4. [Deployment Steps and How to Scale the Application](#deployment-steps-and-how-to-scale-the-application)
+5. [Additional Recommendations](#additional-recommendations)
+6. [References](#references)
+
 ---
 ## Project Structure and Design
 The project is organized as a monorepo with separate frontend and backend applications, orchestrated via Docker Compose.
