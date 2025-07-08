@@ -31,18 +31,18 @@ Flight/
 The backend is built with Express.js and uses Sequelize ORM for database operations.
 #### Key Components:
 5. **Models**:
-  - [Flight Model](file:///C:\Users\raha1\מסמכים\VS Code\Flight\backend\models\flight.js) - Defines flight schema with properties like flight_number, departure, destination, etc.
-  - [Booking Model](file:///C:\Users\raha1\מסמכים\VS Code\Flight\backend\models\booking.js) - Manages booking data with references to flights
-  - [User Model](file:///C:\Users\raha1\מסמכים\VS Code\Flight\backend\models\user.js) - Handles user authentication data
+  - [Flight Model](https://github.com/rahmo96/Flight/blob/main/backend/models/flight.js) - Defines flight schema with properties like flight_number, departure, destination, etc.
+  - [Booking Model](https://github.com/rahmo96/Flight/blob/main/backend/models/booking.js) - Manages booking data with references to flights
+  - [User Model](https://github.com/rahmo96/Flight/blob/main/backend/models/user.js) - Handles user authentication data
 6. **Controllers**:
-  - [Flights Controller](file:///C:\Users\raha1\מסמכים\VS Code\Flight\backend\controllers\flightsController.js) - Manages flight-related operations
-  - [Bookings Controller](file:///C:\Users\raha1\מסמכים\VS Code\Flight\backend\controllers\bookingsController.js) - Handles booking creation, retrieval, and cancellation
-  - [Users Controller](file:///C:\Users\raha1\מסמכים\VS Code\Flight\backend\controllers\usersController.js) - Manages authentication
+  - [Flights Controller](https://github.com/rahmo96/Flight/blob/main/backend/controllers/flightsController.js) - Manages flight-related operations
+  - [Bookings Controller](https://github.com/rahmo96/Flight/blob/main/backend/controllers/bookingsController.js) - Handles booking creation, retrieval, and cancellation
+  - [Users Controller](https://github.com/rahmo96/Flight/blob/main/backend/controllers/usersController.js) - Manages authentication
 7. **Routes**:
-  - [Flights Routes](file:///C:\Users\raha1\מסמכים\VS Code\Flight\backend\routes\flights.js)
-  - [Bookings Routes](file:///C:\Users\raha1\מסמכים\VS Code\Flight\backend\routes\bookings.js)
-  - [Users Routes](file:///C:\Users\raha1\מסמכים\VS Code\Flight\backend\routes\users.js)
-8. **Server Configuration**: [server.js](file:///C:\Users\raha1\מסמכים\VS Code\Flight\backend\server.js) - Main Express application
+  - [Flights Routes](https://github.com/rahmo96/Flight/blob/main/backend/routes/flights.js)
+  - [Bookings Routes](https://github.com/rahmo96/Flight/blob/main/backend/routes/bookings.js)
+  - [Users Routes](https://github.com/rahmo96/Flight/blob/main/backend/routes/users.js)
+8. **Server Configuration**: [server.js](https://github.com/rahmo96/Flight/blob/main/backend/server.js) - Main Express application
 #### Database Schema:
 - **Flights Table**:
   - Primary Key: `flight_number`
@@ -58,17 +58,17 @@ The backend is built with Express.js and uses Sequelize ORM for database operati
 The frontend is built with React using Vite as the build tool.
 #### Key Components:
 9. **Pages**:
-  - [Home](file:///C:\Users\raha1\מסמכים\VS Code\Flight\frontend\src\pages\Home.jsx) - Landing page with search form
-  - [Flights](file:///C:\Users\raha1\מסמכים\VS Code\Flight\frontend\src\pages\Flights.jsx) - Lists available flights
-  - [Booking](file:///C:\Users\raha1\מסמכים\VS Code\Flight\frontend\src\pages\Booking.jsx) - Booking form for selected flight
-  - [MyBookings](file:///C:\Users\raha1\מסמכים\VS Code\Flight\frontend\src\pages\MyBookings.jsx) - User's booking history
+  - [Home](https://github.com/rahmo96/Flight/blob/main/frontend/src/pages/Home.jsx) - Landing page with search form
+  - [Flights](https://github.com/rahmo96/Flight/blob/main/frontend/src/pages/Flights.jsx) - Lists available flights
+  - [Booking](https://github.com/rahmo96/Flight/blob/main/frontend/src/pages/Booking.jsx) - Booking form for selected flight
+  - [MyBookings](https://github.com/rahmo96/Flight/blob/main/frontend/src/pages/MyBookings.jsx) - User's booking history
 10. **Testing**: The project uses Vitest and React Testing Library for frontend tests:
-  - [Home Tests](file:///C:\Users\raha1\מסמכים\VS Code\Flight\frontend\src\pages\Home.test.jsx)
-  - [Flights Tests](file:///C:\Users\raha1\מסמכים\VS Code\Flight\frontend\src\pages\Flights.test.jsx)
-  - [Booking Tests](file:///C:\Users\raha1\מסמכים\VS Code\Flight\frontend\src\pages\Booking.test.jsx)
-  - [MyBookings Tests](file:///C:\Users\raha1\מסמכים\VS Code\Flight\frontend\src\pages\MyBooking.test.jsx)
+  - [Home Tests](https://github.com/rahmo96/Flight/blob/main/frontend/src/pages/Home.test.jsx)
+  - [Flights Tests](https://github.com/rahmo96/Flight/blob/main/frontend/src/pages/Flights.test.jsx)
+  - [Booking Tests](https://github.com/rahmo96/Flight/blob/main/frontend/src/pages/Booking.test.jsx)
+  - [MyBookings Tests](https://github.com/rahmo96/Flight/blob/main/frontend/src/pages/MyBooking.test.jsx)
 11. **Services**: API service layer for communication with the backend
-12. **Routing**: Managed via React Router in [App.jsx](file:///C:\Users\raha1\מסמכים\VS Code\Flight\frontend\src\App.jsx)
+12. **Routing**: Managed via React Router in [App.jsx](https://github.com/rahmo96/Flight/blob/main/frontend/src/App.jsx)
 ## CI/CD Pipeline Setup
 The CI/CD pipeline is implemented using GitHub Actions to automate testing, building, and deployment processes.
 ### GitHub Actions Workflow
@@ -190,7 +190,7 @@ jobs:
 ## Docker and Environment Configuration
 The application is containerized using Docker, with separate containers for the frontend, backend, and database.
 ### Docker Compose Configuration
-The [docker-compose.yml](file:///C:\Users\raha1\מסמכים\VS Code\Flight\docker-compose.yml) file defines the application services:
+The [docker-compose.yml](https://github.com/rahmo96/Flight/blob/main/docker-compose.yml) file defines the application services:
 ```yaml
 version: "3.9"
 services:
@@ -251,7 +251,7 @@ PORT=5000
 # Node environment (development, test, production)
 NODE_ENV=development
 ```
-Database configuration in [config.js](file:///C:\Users\raha1\מסמכים\VS Code\Flight\backend\config\config.js) supports different environments with appropriate settings for each.
+Database configuration in [config.js](https://github.com/rahmo96/Flight/blob/main/backend/config/config.js) supports different environments with appropriate settings for each.
 #### Frontend Configuration
 Frontend environment variables are defined in `.env`:
 ```
