@@ -1,9 +1,10 @@
-# ✈️ Flight Booking System – Documentation
-## 📚 Table of Contents
-1. [Project Structure and Design](null)
-2. [CI/CD Pipeline Setup](null)
-3. [Docker and Environment Configuration](null)
-4. [Deployment Steps and Scaling](null)
+#  Flight Booking System – Documentation
+##  Table of Contents
+1. [Project Structure and Design](#project-structure-and-design)
+2. [CI/CD Pipeline Setup](#cicd-pipeline-setup)
+3. [Docker and Environment Configuration](#docker-and-environment-configuration)
+4. [Deployment Steps and Scaling](#deployment-steps-and-scaling)
+
 ## Project Structure and Design
 The Flight Booking System is a full-stack web application built using a modern JavaScript stack with a clear separation of concerns between frontend and backend.
 ### Overall Architecture
