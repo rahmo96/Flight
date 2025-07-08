@@ -180,5 +180,3 @@ npm run preview
 - [docker-compose.yml](file:///C:/Users/raha1/%D7%9E%D7%A1%D7%9E%D7%9B%D7%99%D7%9D/VS%20Code/Flight/docker-compose.yml)
 - [frontend/README.md](file:///C:/Users/raha1/%D7%9E%D7%A1%D7%9E%D7%9B%D7%99%D7%9D/VS%20Code/Flight/frontend/README.md)
 - [backend/README.md](file:///C:/Users/raha1/%D7%9E%D7%A1%D7%9E%D7%9B%D7%99%D7%9D/VS%20Code/Flight/README.md)
----
-Feel free to copy this into your main [README.md](file:///C:/Users/raha1/%D7%9E%D7%A1%D7%9E%D7%9B%D7%99%D7%9D/VS%20Code/Flight/README.md) or a dedicated `docs/` folder. Let me know if you want a ready-to-use markdown file or further customization!
