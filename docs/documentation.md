@@ -1,4 +1,4 @@
-
+I'll help you add the information to a documentation.md file. Here's a comprehensive documentation.md that includes all the flight booking system information you provided:
 ```markdown
 # ✈️ Flight Booking System – Full Documentation
 
@@ -16,8 +16,6 @@
 ## 🏗 Project Structure and Design
 
 The project is organized as a monorepo with separate frontend and backend applications, orchestrated via Docker Compose.
-
-```
 
 ```
 Flight/
@@ -43,33 +41,45 @@ Flight/
 └── README.md
 ```
 
-````
-
 **Backend:**
 - Express.js REST API for managing flights and bookings.
 - Sequelize ORM (PostgreSQL in dev/prod, SQLite for tests).
 - Jest for unit tests.
+- Key models include:
+  - Flight (flightNumber, departure, destination, departureTime, arrivalTime, price)
+  - Booking (flightId, passengerName, passengerEmail, bookingDate)
+  - User (dateOfBirth, phoneNumber)
 
 **Frontend:**
 - React SPA using Vite and Tailwind CSS.
 - Axios for API calls.
 - Vitest and Testing Library for tests.
+- Key components:
+  - FlightSearch (search by departure, destination, date)
+  - Flights (display filtered flight results)
+  - Booking (booking form with passenger details)
+  - PersonalArea (view user bookings)
 
 ---
 
 ## 🖼 Architecture Diagram
 
-```mermaid
+```
 flowchart LR
   User([User Browser])
   Frontend([React Frontend])
   Backend([Express.js API])
   Database[(PostgreSQL Database)]
-
   User --> Frontend
   Frontend --> Backend
   Backend --> Database
-````
+```
+
+**Component Interactions:**
+1. User interacts with the React frontend to search for flights
+2. Frontend makes API calls to the Express.js backend
+3. Backend queries the PostgreSQL database and returns results
+4. User can book flights, with booking data persisted to the database
 
 ---
 
@@ -79,62 +89,135 @@ flowchart LR
 
 Create `.github/workflows/ci.yml`:
 
-```yaml
+```
 name: CI
-
 on:
   push:
     branches: [main]
   pull_request:
     branches: [main]
-
 jobs:
   build-and-test:
     runs-on: ubuntu-latest
+```
+services:
+  postgres:
+    image: postgres:15
+    env:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: flight_app_test
+    ports: ['5432:5432']
+    options: >-
+      --health-cmd pg_isready
+      --health-interval 10s
+      --health-timeout 5s
+      --health-retries 5
 
-    services:
-      postgres:
-        image: postgres:15
-        env:
-          POSTGRES_USER: postgres
-          POSTGRES_PASSWORD: postgres
-          POSTGRES_DB: flight_app_test
-        ports: ['5432:5432']
-        options: >-
-          --health-cmd pg_isready
-          --health-interval 10s
-          --health-timeout 5s
-          --health-retries 5
+steps:
+  - uses: actions/checkout@v3
 
+  - name: Set up Node.js
+    uses: actions/setup-node@v3
+    with:
+      node-version: 18
+
+  - name: Install backend dependencies
+    run: |
+      cd backend
+      npm install
+
+  - name: Run backend tests
+    env:
+      DATABASE_URL: postgres://postgres:postgres@localhost:5432/flight_app_test
+    run: |
+      cd backend
+      npm test
+
+  - name: Install frontend dependencies
+    run: |
+      cd frontend
+      npm install
+
+  - name: Run frontend tests
+    run: |
+      cd frontend
+      npm test
+
+```
+```
+
+**Frontend CI/CD Workflow** (`.github/workflows/frontend-ci-cd.yml`):
+
+```
+name: Frontend CI/CD
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+jobs:
+  build:
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-
-      - name: Set up Node.js
+      - name: Use Node.js 16.x
         uses: actions/setup-node@v3
         with:
+          node-version: 16.x
+      - name: Install Dependencies
+        working-directory: ./frontend
+        run: npm install
+      - name: Build
+        working-directory: ./frontend
+        run: npm run build --if-present
+      - name: Test
+        working-directory: ./frontend
+        run: npm test
+```
+
+**Backend CI/CD Workflow** (`.github/workflows/backend-ci-cd.yml`):
+
+```
+name: Backend CI/CD
+on:
+  push:
+    branches:
+      - main
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
           node-version: 18
+```
+  - name: Install dependencies
+    working-directory: ./backend
+    run: npm install
 
-      - name: Install backend dependencies
-        run: |
-          cd backend
-          npm install
+  - name: Run Tests
+    working-directory: ./backend
+    run: npm test
 
-      - name: Run backend tests
-        env:
-          DATABASE_URL: postgres://postgres:postgres@localhost:5432/flight_app_test
+```
+  build-and-deploy:
+    needs: test
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Login to Docker Hub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKER_HUB_USERNAME }}
+          password: ${{ secrets.DOCKER_HUB_PASSWORD }}
+      - name: Build and Push Docker image
+        working-directory: ./backend
         run: |
-          cd backend
-          npm test
-
-      - name: Install frontend dependencies
-        run: |
-          cd frontend
-          npm install
-
-      - name: Run frontend tests
-        run: |
-          cd frontend
-          npm test
+          docker build -t rahm096/flight-backend:latest .
+          docker push rahm096/flight-backend:latest
 ```
 
 ---
@@ -147,13 +230,101 @@ jobs:
 * **backend** – served on port 5000.
 * **postgres** – data persistence.
 
+```
+version: "3.8"
+services:
+  flight-db:
+    container_name: flight-db
+    image: postgres:14.1-alpine
+    environment:
+      POSTGRES_USER: flightuser
+      POSTGRES_PASSWORD: flightpass
+      POSTGRES_DB: flight_booking
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+      - ./docker/init.sql:/docker-entrypoint-initdb.d/init.sql
+  backend:
+    build:
+      context: ./backend
+    ports:
+      - "5000:5000"
+    depends_on:
+      - flight-db
+    environment:
+      DATABASE_URL: postgresql://flightuser:flightpass@flight-db:5432/flight_booking
+      NODE_ENV: development
+      PORT: 5000
+  frontend:
+    build:
+      context: ./frontend
+    ports:
+      - "5173:5173"
+    depends_on:
+      - backend
+    environment:
+      VITE_BACKEND_URL: http://localhost:5000
+volumes:
+  postgres-data:
+```
+
+**Backend Dockerfile** (`backend/Dockerfile`):
+
+```
+FROM node:18-alpine
+WORKDIR /app
+COPY package*.json ./
+RUN npm install
+COPY . .
+EXPOSE 5000
+CMD ["npm", "run", "start"]
+```
+
+**Frontend Dockerfile** (`frontend/Dockerfile`):
+
+```
+FROM node:18-alpine AS build
+WORKDIR /app
+COPY package*.json ./
+RUN npm install
+COPY . .
+RUN npm run build
+FROM nginx:alpine
+COPY --from=build /app/dist /usr/share/nginx/html
+EXPOSE 80
+CMD ["nginx", "-g", "daemon off;"]
+```
+
+**Database Initialization SQL** (`docker/init.sql`):
+
+```
+CREATE TABLE IF NOT EXISTS flights (
+    id SERIAL PRIMARY KEY,
+    flight_number VARCHAR(20) NOT NULL,
+    departure VARCHAR NOT NULL,
+    destination VARCHAR NOT NULL,
+    departure_time TIMESTAMP,
+    arrival_time TIMESTAMP,
+    price FLOAT
+);
+CREATE TABLE IF NOT EXISTS bookings (
+    id SERIAL PRIMARY KEY,
+    flight_id INTEGER REFERENCES flights(id) NOT NULL,
+    passenger_name VARCHAR(100),
+    passenger_email VARCHAR,
+    booking_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+```
+
 **Environment Variables:**
 
 `backend/.env`
 
 ```
-DATABASE_URL=postgresql://postgres:password@postgres:5432/flight_app_dev
+DATABASE_URL=postgresql://flightuser:flightpass@flight-db:5432/flight_booking
 PORT=5000
+NODE_ENV=development
 ```
 
 `frontend/.env`
@@ -168,14 +339,21 @@ VITE_BACKEND_URL=http://localhost:5000
 
 ### 1. Local Development
 
-```sh
+```
+# Clone the repository
+git clone https://github.com/rahmo96/Flight.git
+cd Flight
+# Start the application with Docker Compose
 docker-compose up --build
 ```
 
 ### 2. Production Deployment
 
-```sh
-docker-compose up -d --build
+```
+# Pull the latest changes
+git pull origin main
+# Build and run in production mode
+docker-compose -f docker-compose.prod.yml up -d --build
 ```
 
 ### 3. Scaling
@@ -183,6 +361,14 @@ docker-compose up -d --build
 * **Backend:** Horizontal scaling via multiple containers behind a load balancer.
 * **Frontend:** Static build can be hosted via CDN.
 * **Database:** Use managed PostgreSQL with replication.
+
+### 4. Monitoring
+
+* Use Docker stats for basic monitoring
+* For production, integrate with:
+  * Prometheus for metrics collection
+  * Grafana for visualization
+  * ELK stack for logging
 
 ---
 
@@ -192,33 +378,28 @@ docker-compose up -d --build
 
 `ansible/deploy.yml`:
 
-```yaml
+```
 - name: Deploy Flight Booking App
-  hosts: webservers
-  become: yes
-
-  tasks:
-    - name: Install Docker
-      apt:
-        name: docker.io
-        state: present
-        update_cache: yes
-
-    - name: Install Docker Compose
-      get_url:
-        url: https://github.com/docker/compose/releases/download/1.29.2/docker-compose-Linux-x86_64
-        dest: /usr/local/bin/docker-compose
-        mode: '0755'
-
-    - name: Copy project files
-      copy:
-        src: ../
-        dest: /opt/flight-app
-
-    - name: Run Docker Compose
-      shell: docker-compose up -d --build
-      args:
-        chdir: /opt/flight-app
+hosts: webservers
+become: yes
+  - name: Install Docker
+apt:
+  name: docker.io
+  state: present
+  update_cache: yes
+  - name: Install Docker Compose
+get_url:
+  url: https://github.com/docker/compose/releases/download/1.29.2/docker-compose-Linux-x86_64
+  dest: /usr/local/bin/docker-compose
+  mode: '0755'
+  - name: Copy project files
+copy:
+  src: ../
+  dest: /opt/flight-app
+  - name: Run Docker Compose
+shell: docker-compose up -d --build
+args:
+  chdir: /opt/flight-app
 ```
 
 Run:
@@ -233,25 +414,23 @@ ansible-playbook -i inventory.ini ansible/deploy.yml
 
 `terraform/main.tf`:
 
-```hcl
+```
 provider "aws" {
   region = "eu-central-1"
 }
-
 resource "aws_instance" "flight_app_server" {
   ami           = "ami-xxxxxxxxx" # Ubuntu AMI ID
   instance_type = "t3.micro"
   tags = {
     Name = "FlightBookingApp"
   }
-
   provisioner "remote-exec" {
     inline = [
       "sudo apt-get update",
       "sudo apt-get install -y docker.io",
       "sudo systemctl start docker",
       "sudo systemctl enable docker",
-      "curl -L \"https://github.com/docker/compose/releases/download/1.29.2/docker-compose-$(uname -s)-$(uname -m)\" -o /usr/local/bin/docker-compose",
+      "curl -L "https://github.com/docker/compose/releases/download/1.29.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose",
       "chmod +x /usr/local/bin/docker-compose",
       "git clone https://github.com/rahmo96/Flight.git",
       "cd Flight && docker-compose up -d --build"
@@ -260,3 +439,52 @@ resource "aws_instance" "flight_app_server" {
 }
 ```
 
+## 📋 Additional Recommendations
+
+### Security Enhancements
+
+1. **Backend API Security:**
+   - Implement JWT authentication for API endpoints
+   - Add rate limiting to prevent brute force attacks
+   - Use helmet.js to set secure HTTP headers
+
+2. **Database Security:**
+   - Use parameterized queries to prevent SQL injection
+   - Implement database connection pooling
+   - Regularly backup database data
+
+3. **Frontend Security:**
+   - Implement Content Security Policy (CSP)
+   - Use HTTPS for all communications
+   - Sanitize user inputs to prevent XSS attacks
+
+### Testing Strategy
+
+1. **Unit Tests:**
+   - Backend: Jest for testing controllers, models, and services
+   - Frontend: Vitest for testing components and utilities
+
+2. **Integration Tests:**
+   - Test API endpoints with supertest
+   - Test database interactions
+
+3. **End-to-End Tests:**
+   - Use Cypress to test complete user flows (search, booking, etc.)
+
+### Performance Optimization
+
+1. **Frontend:**
+   - Implement code splitting with React.lazy
+   - Use React.memo for expensive components
+   - Add service worker for caching static assets
+
+2. **Backend:**
+   - Implement response compression
+   - Add Redis caching for frequently accessed data
+   - Use connection pooling for database connections
+
+3. **Infrastructure:**
+   - Set up CDN for static assets
+   - Implement load balancing for the backend
+   - Use auto-scaling for handling traffic spikes
+```
