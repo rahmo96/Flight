@@ -2,6 +2,8 @@
 
 A full-stack application for flight search and booking management.
 
+Full documentation [here](https://github.com/rahmo96/Flight/blob/main/docs/documentation.md)
+
 ## Project Overview
 
 This flight booking system provides a user-friendly interface to search for flights, view availability, and make reservations. The application handles seat capacity management, ensuring that flights are only displayed when seats are available.
