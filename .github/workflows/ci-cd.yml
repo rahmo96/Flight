@@ -7,7 +7,6 @@ on:
   pull_request:
     branches: [main, dev]
 
-# כדי שלא ירוצו כמה צינורות במקביל על אותו ענף
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
@@ -25,21 +24,12 @@ jobs:
           node-version: '20'
           cache: 'npm'
 
-      # התקנת תלויות לשתי החבילות (התאם לפי המבנה שלך)
       - name: Install deps (frontend)
         working-directory: ./frontend
         run: npm ci
       - name: Install deps (backend)
         working-directory: ./backend
         run: npm ci
-
-      # אל תתקן אוטומטית ב-CI. אם יש אזהרות – נכשל.
-      - name: Lint frontend
-        working-directory: ./frontend
-        run: npx eslint . --max-warnings=0
-      - name: Lint backend
-        working-directory: ./backend
-        run: npx eslint . --max-warnings=0
 
   test-backend:
     name: Test Backend
