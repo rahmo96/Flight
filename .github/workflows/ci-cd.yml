@@ -137,7 +137,7 @@ jobs:
           username: ${{ secrets.DOCKER_HUB_USERNAME }}
           password: ${{ secrets.DOCKER_HUB_PASSWORD }}
 
-      - name: Build & push (tags: latest + sha)
+      - name: Build & push 
         working-directory: ./backend
         run: |
           IMAGE=rahmo96/backend
