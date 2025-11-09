@@ -1,6 +1,5 @@
 const { Booking, Flight, sequelize } = require('../models');
 
-
 exports.getAllBookings = async (req, res) => {
   try {
     const bookings = await Booking.findAll({ include: Flight });
@@ -10,15 +9,15 @@ exports.getAllBookings = async (req, res) => {
   }
 };
 
-exports.getBookingByEmail = async(req,res) => {
-  try{
+exports.getBookingByEmail = async (req, res) => {
+  try {
     const userBooking = await Booking.findAll({
       where: { passenger_email: req.params.email },
-      include: Flight
+      include: Flight,
     });
 
     res.json(userBooking);
-  }catch (err) {
+  } catch (err) {
     res.status(500).json({ error: err.message });
   }
 };
@@ -37,44 +36,52 @@ exports.getBookingById = async (req, res) => {
 
 exports.createBooking = async (req, res) => {
   const t = await sequelize.transaction();
-  
+
   try {
-    const { flight_number, passenger_name, passenger_email, ticket_sold = 1 } = req.body;
-    
+    const {
+      flight_number,
+      passenger_name,
+      passenger_email,
+      ticket_sold = 1,
+    } = req.body;
+
     if (!flight_number) {
       return res.status(400).json({ error: 'Flight ID is required' });
     }
-    
+
     // Check if seats are available
     const flight = await Flight.findByPk(flight_number, { transaction: t });
-    
+
     if (!flight) {
       await t.rollback();
       return res.status(404).json({ error: 'Flight not found' });
     }
-    
+
     // Make sure we have enough seats
     if (flight.available_seats < ticket_sold) {
       await t.rollback();
-      return res.status(400).json({ 
-        error: `Not enough seats available. Only ${flight.available_seats} seats left.` 
+      return res.status(400).json({
+        error: `Not enough seats available. Only ${flight.available_seats} seats left.`,
       });
     }
-    
+
     // Update available seats
     await flight.update(
       { available_seats: flight.available_seats - ticket_sold },
-      { transaction: t }
+      { transaction: t },
     );
-    
+
     // Create booking
-    const booking = await Booking.create({
-      flight_number: flight_number,
-      passenger_name: passenger_name,
-      passenger_email: passenger_email,
-      ticket_sold: ticket_sold
-    }, { transaction: t });
-    
+    const booking = await Booking.create(
+      {
+        flight_number: flight_number,
+        passenger_name: passenger_name,
+        passenger_email: passenger_email,
+        ticket_sold: ticket_sold,
+      },
+      { transaction: t },
+    );
+
     await t.commit();
     res.status(201).json(booking);
   } catch (err) {
@@ -86,29 +93,29 @@ exports.createBooking = async (req, res) => {
 
 exports.deleteBooking = async (req, res) => {
   const t = await sequelize.transaction();
-  
+
   try {
-    const booking = await Booking.findByPk(req.params.id, { 
-      transaction: t 
+    const booking = await Booking.findByPk(req.params.id, {
+      transaction: t,
     });
-    
+
     if (!booking) {
       await t.rollback();
       return res.status(404).json({ error: 'Booking not found' });
     }
-    
+
     // Increase available seats back
-    const flight = await Flight.findByPk(booking.flight_number, { 
-      transaction: t 
+    const flight = await Flight.findByPk(booking.flight_number, {
+      transaction: t,
     });
-    
+
     if (flight) {
       await flight.update(
         { available_seats: flight.available_seats + booking.ticket_sold },
-        { transaction: t }
+        { transaction: t },
       );
     }
-    
+
     await booking.destroy({ transaction: t });
     await t.commit();
     res.status(204).send();
@@ -118,32 +125,30 @@ exports.deleteBooking = async (req, res) => {
   }
 };
 
-
 // Add code to handle booking cancellations (optionally increasing available seats back)
 exports.deleteBooking = async (req, res) => {
   const t = await sequelize.transaction();
-  
+
   try {
-    const booking = await Booking.findByPk(req.params.id, { 
-      transaction: t 
+    const booking = await Booking.findByPk(req.params.id, {
+      transaction: t,
     });
-    
+
     if (!booking) {
       await t.rollback();
       return res.status(404).json({ error: 'Booking not found' });
     }
-    
+
     // Increase available seats back
-    const flight = await Flight.findByPk(booking.flight_number, { 
-      transaction: t 
+    const flight = await Flight.findByPk(booking.flight_number, {
+      transaction: t,
     });
-    
+
     await flight.update(
       { available_seats: flight.available_seats + booking.ticket_sold },
-      { transaction: t }
+      { transaction: t },
     );
 
-    
     await booking.destroy({ transaction: t });
     await t.commit();
     res.status(204).send();

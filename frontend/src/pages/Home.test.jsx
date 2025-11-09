@@ -30,7 +30,7 @@ describe('Home component', () => {
     render(
       <BrowserRouter>
         <Home />
-      </BrowserRouter>
+      </BrowserRouter>,
     );
 
     expect(screen.getByText('Find Your Perfect Flight')).toBeInTheDocument();
@@ -38,7 +38,9 @@ describe('Home component', () => {
     expect(screen.getByLabelText('Destination')).toBeInTheDocument();
     expect(screen.getByLabelText('Date')).toBeInTheDocument();
     expect(screen.getByLabelText('Passengers')).toBeInTheDocument();
-    expect(screen.getByRole('button', { name: /search flights/i })).toBeInTheDocument();
+    expect(
+      screen.getByRole('button', { name: /search flights/i }),
+    ).toBeInTheDocument();
     expect(screen.getByText('Popular Destinations')).toBeInTheDocument();
   });
 
@@ -46,7 +48,7 @@ describe('Home component', () => {
     render(
       <BrowserRouter>
         <Home />
-      </BrowserRouter>
+      </BrowserRouter>,
     );
 
     const departureInput = screen.getByLabelText('Departure');
@@ -71,7 +73,7 @@ describe('Home component', () => {
     fireEvent.click(screen.getByRole('button', { name: /search flights/i }));
 
     expect(mockNavigate).toHaveBeenCalledWith(
-      `/flights?departure=New York&destination=London&date=${dateStr}&passengers=2`
+      `/flights?departure=New York&destination=London&date=${dateStr}&passengers=2`,
     );
   });
 
@@ -79,7 +81,7 @@ describe('Home component', () => {
     render(
       <BrowserRouter>
         <Home />
-      </BrowserRouter>
+      </BrowserRouter>,
     );
 
     const cityCard = screen.getByText('Paris');

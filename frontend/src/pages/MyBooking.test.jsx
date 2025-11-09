@@ -29,16 +29,16 @@ describe('MyBookings', () => {
           passenger_name: 'Almog',
           passenger_email: 'Almog@test.com',
           booking_date: '2024-01-01T10:00:00Z',
-          ticket_sold: 2
-        }
-      ]
+          ticket_sold: 2,
+        },
+      ],
     });
 
     render(
-        <BrowserRouter>
-            <MyBookings />
-        </BrowserRouter>
-        );
+      <BrowserRouter>
+        <MyBookings />
+      </BrowserRouter>,
+    );
 
     expect(screen.getByText(/Loading.../i)).toBeInTheDocument();
 
@@ -52,9 +52,11 @@ describe('MyBookings', () => {
   test('Display a message if there are not bookings', async () => {
     axios.get.mockResolvedValue({ data: [] });
 
-    render( <BrowserRouter>
-            <MyBookings />
-        </BrowserRouter>);
+    render(
+      <BrowserRouter>
+        <MyBookings />
+      </BrowserRouter>,
+    );
 
     await waitFor(() => {
       expect(screen.getByText(/No bookings flight found/i)).toBeInTheDocument();
@@ -64,9 +66,11 @@ describe('MyBookings', () => {
   test('There is no server contact if the client is not connected', async () => {
     localStorage.removeItem('user');
 
-    render( <BrowserRouter>
-            <MyBookings />
-        </BrowserRouter>);
+    render(
+      <BrowserRouter>
+        <MyBookings />
+      </BrowserRouter>,
+    );
 
     await waitFor(() => {
       expect(screen.getByText(/No bookings flight found/i)).toBeInTheDocument();
@@ -82,7 +86,7 @@ describe('MyBookings', () => {
       passenger_name: 'Ben',
       passenger_email: 'ben@test.com',
       booking_date: '2024-05-15T12:00:00Z',
-      ticket_sold: 1
+      ticket_sold: 1,
     };
 
     //First display
@@ -92,9 +96,11 @@ describe('MyBookings', () => {
     // Display after booking have been cancelled
     axios.get.mockResolvedValueOnce({ data: [] });
 
-    render( <BrowserRouter>
-            <MyBookings />
-        </BrowserRouter>);
+    render(
+      <BrowserRouter>
+        <MyBookings />
+      </BrowserRouter>,
+    );
 
     await waitFor(() => {
       expect(screen.getByText(/FL123/)).toBeInTheDocument();
@@ -105,7 +111,7 @@ describe('MyBookings', () => {
 
     await waitFor(() => {
       expect(axios.delete).toHaveBeenCalledWith(
-        expect.stringContaining(`/api/bookings/${booking.id}`)
+        expect.stringContaining(`/api/bookings/${booking.id}`),
       );
     });
 

@@ -5,9 +5,9 @@ exports.getAllFlights = async (req, res) => {
     const flights = await Flight.findAll({
       where: {
         available_seats: {
-          [require('sequelize').Op.gt]: 0 // Only show flights with available seats > 0
-        }
-      }
+          [require('sequelize').Op.gt]: 0, // Only show flights with available seats > 0
+        },
+      },
     });
     res.json(flights);
   } catch (err) {

@@ -12,7 +12,9 @@ function Home() {
 
   const handleSearch = (e) => {
     e.preventDefault();
-    navigate(`/flights?departure=${departure}&destination=${destination}&date=${date}&passengers=${passengers}`);
+    navigate(
+      `/flights?departure=${departure}&destination=${destination}&date=${date}&passengers=${passengers}`,
+    );
   };
 
   return (
@@ -20,7 +22,9 @@ function Home() {
       <div className="bg-gradient-to-b from-blue-500 to-blue-700 text-white py-20">
         <div className="container mx-auto text-center">
           <h1 className="text-5xl font-bold mb-6">Find Your Perfect Flight</h1>
-          <p className="text-xl mb-8">Discover amazing destinations at the best prices</p>
+          <p className="text-xl mb-8">
+            Discover amazing destinations at the best prices
+          </p>
         </div>
       </div>
 
@@ -28,20 +32,30 @@ function Home() {
         <div className="bg-white rounded-lg shadow-lg p-6 mb-10">
           <form onSubmit={handleSearch} className="flex flex-wrap gap-4">
             <div className="flex-1 min-w-[200px]">
-            <label htmlFor="departure-input" className="block text-gray-700 mb-2">Departure</label>
-            <input
-              id="departure-input"
-              type="text"
-              className="w-full p-3 border border-gray-300 rounded"
-              placeholder="City or airport"
-              value={departure}
-              onChange={(e) => setDeparture(e.target.value)}
-              required
-            />
+              <label
+                htmlFor="departure-input"
+                className="block text-gray-700 mb-2"
+              >
+                Departure
+              </label>
+              <input
+                id="departure-input"
+                type="text"
+                className="w-full p-3 border border-gray-300 rounded"
+                placeholder="City or airport"
+                value={departure}
+                onChange={(e) => setDeparture(e.target.value)}
+                required
+              />
             </div>
             <div className="flex-1 min-w-[200px]">
-            <label htmlFor="destination-input" className="block text-gray-700 mb-2">Destination</label>
-            <input
+              <label
+                htmlFor="destination-input"
+                className="block text-gray-700 mb-2"
+              >
+                Destination
+              </label>
+              <input
                 id="destination-input"
                 type="text"
                 className="w-full p-3 border border-gray-300 rounded"
@@ -52,7 +66,9 @@ function Home() {
               />
             </div>
             <div className="flex-1 min-w-[200px]">
-              <label htmlFor="date-input" className="block text-gray-700 mb-2">Date</label>
+              <label htmlFor="date-input" className="block text-gray-700 mb-2">
+                Date
+              </label>
               <input
                 id="date-input"
                 type="date"
@@ -63,8 +79,13 @@ function Home() {
               />
             </div>
             <div className="flex-1 min-w-[200px]">
-            <label htmlFor="passengers-input" className="block text-gray-700 mb-2">Passengers</label>
-            <input
+              <label
+                htmlFor="passengers-input"
+                className="block text-gray-700 mb-2"
+              >
+                Passengers
+              </label>
+              <input
                 id="passengers-input"
                 type="number"
                 min="1"
@@ -90,26 +111,37 @@ function Home() {
           <div className="bg-white p-6 rounded-lg shadow-md">
             <div className="text-blue-600 text-4xl mb-4">✈️</div>
             <h3 className="text-xl font-bold mb-2">Worldwide Destinations</h3>
-            <p className="text-gray-600">Explore hundreds of destinations around the globe with our extensive flight network.</p>
+            <p className="text-gray-600">
+              Explore hundreds of destinations around the globe with our
+              extensive flight network.
+            </p>
           </div>
           <div className="bg-white p-6 rounded-lg shadow-md">
             <div className="text-blue-600 text-4xl mb-4">💰</div>
             <h3 className="text-xl font-bold mb-2">Best Price Guarantee</h3>
-            <p className="text-gray-600">We offer competitive prices on flights to ensure you get the best deal possible.</p>
+            <p className="text-gray-600">
+              We offer competitive prices on flights to ensure you get the best
+              deal possible.
+            </p>
           </div>
           <div className="bg-white p-6 rounded-lg shadow-md">
             <div className="text-blue-600 text-4xl mb-4">🛡️</div>
             <h3 className="text-xl font-bold mb-2">Secure Booking</h3>
-            <p className="text-gray-600">Book with confidence knowing your personal and payment details are secure.</p>
+            <p className="text-gray-600">
+              Book with confidence knowing your personal and payment details are
+              secure.
+            </p>
           </div>
         </div>
 
         <div className="bg-gray-100 p-8 rounded-lg mb-16">
-          <h2 className="text-3xl font-bold mb-6 text-center">Popular Destinations</h2>
+          <h2 className="text-3xl font-bold mb-6 text-center">
+            Popular Destinations
+          </h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
-            {['New York', 'London', 'Tokyo', 'Paris'].map(city => (
-              <div 
-                key={city} 
+            {['New York', 'London', 'Tokyo', 'Paris'].map((city) => (
+              <div
+                key={city}
                 className="bg-white rounded-lg overflow-hidden shadow-md hover:shadow-lg transition-shadow cursor-pointer"
                 onClick={() => {
                   setDestination(city);

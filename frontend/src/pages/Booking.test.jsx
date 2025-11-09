@@ -14,20 +14,20 @@ vi.mock('react-router-dom', async () => {
   return {
     ...actual,
     useParams: () => ({ flight_number: 'FL123' }),
-    useNavigate: () => vi.fn()
+    useNavigate: () => vi.fn(),
   };
 });
 
 describe('Booking component', () => {
   const mockFlight = {
     flight_number: 'FL123',
-    flightNumber: 'FL123',         // לכותרת
+    flightNumber: 'FL123', // לכותרת
     departure: 'New York',
     destination: 'London',
     departure_time: '2023-10-15T10:00:00Z',
     arrival_time: '2023-10-15T22:00:00Z',
     price: 450,
-    available_seats: 45
+    available_seats: 45,
   };
 
   beforeEach(() => {
@@ -36,10 +36,7 @@ describe('Booking component', () => {
     axios.post.mockResolvedValue({ data: { id: 1 } });
 
     // שים מייל ב-localStorage (כמו באפליקציה)
-    localStorage.setItem(
-      'user',
-      JSON.stringify({ email: 'john@example.com' })
-    );
+    localStorage.setItem('user', JSON.stringify({ email: 'john@example.com' }));
 
     // Stub ל-alert
     window.alert = vi.fn();
@@ -54,7 +51,7 @@ describe('Booking component', () => {
     render(
       <BrowserRouter>
         <Booking />
-      </BrowserRouter>
+      </BrowserRouter>,
     );
 
     // מסך טעינה
@@ -62,23 +59,19 @@ describe('Booking component', () => {
 
     // אחרי שה-flight נטען
     await waitFor(() => {
-      expect(
-        screen.getByText(/Booking Flight: FL123/i)
-      ).toBeInTheDocument();
+      expect(screen.getByText(/Booking Flight: FL123/i)).toBeInTheDocument();
 
       // בגלל תגיות <strong> הטקסט מתפצל – נשתמש בבדיקת textContent
       expect(
-        screen.getByText((_, el) => el?.textContent === 'From: New York')
+        screen.getByText((_, el) => el?.textContent === 'From: New York'),
       ).toBeInTheDocument();
 
       expect(
-        screen.getByText((_, el) => el?.textContent === 'To: London')
+        screen.getByText((_, el) => el?.textContent === 'To: London'),
       ).toBeInTheDocument();
 
       expect(
-        screen.getByText(
-          (_, el) => el?.textContent === 'Price per seat: $450'
-        )
+        screen.getByText((_, el) => el?.textContent === 'Price per seat: $450'),
       ).toBeInTheDocument();
     });
 
@@ -95,7 +88,7 @@ describe('Booking component', () => {
     render(
       <BrowserRouter>
         <Booking />
-      </BrowserRouter>
+      </BrowserRouter>,
     );
 
     // Total הראשוני
@@ -114,7 +107,7 @@ describe('Booking component', () => {
     render(
       <BrowserRouter>
         <Booking />
-      </BrowserRouter>
+      </BrowserRouter>,
     );
 
     // ודא שהטופס נטען
@@ -124,21 +117,18 @@ describe('Booking component', () => {
 
     // רק שם – אין צורך לשנות אימייל
     fireEvent.change(screen.getByPlaceholderText('Full Name'), {
-      target: { value: 'John Doe' }
+      target: { value: 'John Doe' },
     });
 
     fireEvent.click(screen.getByText('Confirm Booking'));
 
     await waitFor(() => {
-      expect(axios.post).toHaveBeenCalledWith(
-        expect.any(String),
-        {
-          passenger_name: 'John Doe',
-          passenger_email: 'john@example.com',   // מהמקומי
-          flight_number: 'FL123',
-          ticket_sold: 1
-        }
-      );
+      expect(axios.post).toHaveBeenCalledWith(expect.any(String), {
+        passenger_name: 'John Doe',
+        passenger_email: 'john@example.com', // מהמקומי
+        flight_number: 'FL123',
+        ticket_sold: 1,
+      });
       expect(window.alert).toHaveBeenCalledWith('✅ Booking successful!');
     });
   });

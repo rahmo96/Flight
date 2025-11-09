@@ -25,7 +25,7 @@ function MyBookings() {
 
       // Use the correct endpoint for by-email
       const res = await axios.get(
-        `${import.meta.env.VITE_BACKEND_URL}/api/bookings/by-email/${userEmail}`
+        `${import.meta.env.VITE_BACKEND_URL}/api/bookings/by-email/${userEmail}`,
       );
       setUserBooking(res.data);
     } catch (err) {
@@ -41,14 +41,28 @@ function MyBookings() {
   }, []);
 
   const handleCancel = async (id) => {
-    const res =  await axios.delete(`${import.meta.env.VITE_BACKEND_URL}/api/bookings/${id}`);
+    const res = await axios.delete(
+      `${import.meta.env.VITE_BACKEND_URL}/api/bookings/${id}`,
+    );
     console.log(res);
     fetchBookings();
   };
 
-  if (loading) return <Layout><p className="text-center mt-10 text-black">Loading...</p>;</Layout>
+  if (loading)
+    return (
+      <Layout>
+        <p className="text-center mt-10 text-black">Loading...</p>;
+      </Layout>
+    );
   if (!userBooking || userBooking.length === 0)
-    return <Layout><p className="text-center mt-10 text-black">No bookings flight found.</p>;</Layout>
+    return (
+      <Layout>
+        <p className="text-center mt-10 text-black">
+          No bookings flight found.
+        </p>
+        ;
+      </Layout>
+    );
 
   return (
     <Layout>
@@ -56,11 +70,18 @@ function MyBookings() {
         <h2 className="text-2xl font-bold mb-6">My Bookings</h2>
         <div className="grid gap-4">
           {userBooking.map((booking) => (
-            <div key={booking.id} className="bg-white rounded shadow p-4 flex justify-between items-center">
-              <div className='text-black'>
+            <div
+              key={booking.id}
+              className="bg-white rounded shadow p-4 flex justify-between items-center"
+            >
+              <div className="text-black">
                 <div className="font-semibold">{booking.flight_number}</div>
-                <div>{booking.passenger_name} ({booking.passenger_email})</div>
-                <div>Booked on: {new Date(booking.booking_date).toLocaleString()}</div>
+                <div>
+                  {booking.passenger_name} ({booking.passenger_email})
+                </div>
+                <div>
+                  Booked on: {new Date(booking.booking_date).toLocaleString()}
+                </div>
                 <div>Tickets: {booking.ticket_sold}</div>
               </div>
               <button

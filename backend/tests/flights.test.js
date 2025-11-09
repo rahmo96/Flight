@@ -9,7 +9,7 @@ describe('Flight API', () => {
   beforeEach(async () => {
     // Reset flights table before each test
     await Flight.destroy({ where: {} });
-    
+
     // Add test data
     await Flight.create({
       flight_number: 'TEST123',
@@ -17,7 +17,7 @@ describe('Flight API', () => {
       destination: 'London',
       departure_time: new Date('2023-12-01T10:00:00Z'),
       arrival_time: new Date('2023-12-01T22:00:00Z'),
-      price: 299.99
+      price: 299.99,
     });
   });
 
@@ -35,13 +35,11 @@ describe('Flight API', () => {
       destination: 'Tokyo',
       departure_time: '2023-12-15T08:00:00Z',
       arrival_time: '2023-12-16T06:00:00Z',
-      price: 599.99
+      price: 599.99,
     };
 
-    const res = await request(app)
-      .post('/api/flights')
-      .send(newFlight);
-    
+    const res = await request(app).post('/api/flights').send(newFlight);
+
     expect(res.statusCode).toEqual(201);
     expect(res.body.flight_number).toBe('TEST456');
   });

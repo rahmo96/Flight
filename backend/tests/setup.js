@@ -4,7 +4,7 @@ const { sequelize } = require('../models');
 
 beforeAll(async () => {
   console.log('🧪 Running in test mode');
-  
+
   try {
     await sequelize.sync({ force: true });
     console.log('✅ Test database synced');

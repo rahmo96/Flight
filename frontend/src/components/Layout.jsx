@@ -1,42 +1,46 @@
 import React, { useState } from 'react';
+import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
-
 
 function Layout({ children }) {
   const [showLoginModal, setShowLoginModal] = useState(false);
   const [showRegisterModal, setShowRegisterModal] = useState(false);
   const [loginData, setLoginData] = useState({ username: '', password: '' });
-  const [Name, setName] = useState({name: ''});
-  const [registerData, setRegisterData] = useState({ 
-    username: '', 
-    email: '', 
-    password: '', 
-    first_name: '', 
-    last_name: '' 
+  // const [Name, setName] = useState({ name: '' }); // לא בשימוש – אפשר למחוק או להחזיר אם צריך
+  const [registerData, setRegisterData] = useState({
+    username: '',
+    email: '',
+    password: '',
+    first_name: '',
+    last_name: '',
   });
-  const [isLoggedIn, setIsLoggedIn] = useState(localStorage.getItem('user') !== null);
+  const [isLoggedIn, setIsLoggedIn] = useState(
+    localStorage.getItem('user') !== null,
+  );
   const [currentUser, setCurrentUser] = useState(() => {
     try {
-      const item = localStorage.getItem("user");
-      return item && item !== "undefined" ? JSON.parse(item) : null;
+      const item = localStorage.getItem('user');
+      return item && item !== 'undefined' ? JSON.parse(item) : null;
     } catch (err) {
-      console.error("Failed to parse user from localStorage:", err);
+      console.error('Failed to parse user from localStorage:', err);
       return null;
     }
   });
 
-
   const handleLogin = async (e) => {
     e.preventDefault();
     try {
-      const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/users/login`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(loginData)
-      });
-      
+      const response = await fetch(
+        `${import.meta.env.VITE_BACKEND_URL}/api/users/login`,
+        {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(loginData),
+        },
+      ); // <-- סוגר את ה-fetch (הפסיק הוסר)
+
       const data = await response.json();
-      
+
       if (response.ok) {
         localStorage.setItem('user', JSON.stringify(data));
         setIsLoggedIn(true);
@@ -45,7 +49,7 @@ function Layout({ children }) {
       } else {
         alert(data.error || 'Login failed');
       }
-    } catch (error) {
+    } catch {
       alert('Login failed. Please try again.');
     }
   };
@@ -53,24 +57,33 @@ function Layout({ children }) {
   const handleRegister = async (e) => {
     e.preventDefault();
     try {
-      const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/users/register`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(registerData)
-      });
-      
+      const response = await fetch(
+        `${import.meta.env.VITE_BACKEND_URL}/api/users/register`,
+        {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(registerData),
+        },
+      ); // <-- סוגר את ה-fetch (הפסיק הוסר)
+
       const data = await response.json();
-      
+
       if (response.ok) {
         alert('Registration successful! Please log in.');
         setShowRegisterModal(false);
         setShowLoginModal(true);
-        setRegisterData({ username: '', email: '', password: '', first_name: '', last_name: '' });
+        setRegisterData({
+          username: '',
+          email: '',
+          password: '',
+          first_name: '',
+          last_name: '',
+        });
       } else {
         alert(data.error || 'Registration failed');
       }
-    } catch (error) {
-      alert('Registration failed. Please try again.');
+    } catch {
+      alert('Login failed. Please try again.');
     }
   };
 
@@ -89,14 +102,20 @@ function Layout({ children }) {
             <Link to="/">FlightBooker</Link>
           </h1>
           <nav className="flex items-center space-x-4">
-            <Link to="/" className="hover:underline text-black">Home</Link>
-            <Link to="/flights" className="hover:underline text-black">Flights</Link>
-            
+            <Link to="/" className="hover:underline text-black">
+              Home
+            </Link>
+            <Link to="/flights" className="hover:underline text-black">
+              Flights
+            </Link>{' '}
+            {/* <-- נסגר הלינק */}
             {isLoggedIn ? (
               <div className="flex items-center space-x-2">
                 <span>Hello, {currentUser?.first_name || 'Guest'}</span>
-                <Link to="/MyBookings" className="hover:underline text-black">My Bookings</Link>
-                <button 
+                <Link to="/MyBookings" className="hover:underline text-black">
+                  My Bookings
+                </Link>
+                <button
                   onClick={handleLogout}
                   className="bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded"
                 >
@@ -105,13 +124,13 @@ function Layout({ children }) {
               </div>
             ) : (
               <>
-                <button 
+                <button
                   onClick={() => setShowLoginModal(true)}
                   className="bg-blue-500 hover:bg-blue-700 text-white px-3 py-1 rounded"
                 >
                   Login
                 </button>
-                <button 
+                <button
                   onClick={() => setShowRegisterModal(true)}
                   className="bg-green-500 hover:bg-green-600 text-white px-3 py-1 rounded"
                 >
@@ -135,7 +154,9 @@ function Layout({ children }) {
                   type="text"
                   className="w-full p-2 border rounded"
                   value={loginData.username}
-                  onChange={(e) => setLoginData({...loginData, username: e.target.value})}
+                  onChange={(e) =>
+                    setLoginData({ ...loginData, username: e.target.value })
+                  }
                   required
                 />
               </div>
@@ -145,7 +166,9 @@ function Layout({ children }) {
                   type="password"
                   className="w-full p-2 border rounded"
                   value={loginData.password}
-                  onChange={(e) => setLoginData({...loginData, password: e.target.value})}
+                  onChange={(e) =>
+                    setLoginData({ ...loginData, password: e.target.value })
+                  }
                   required
                 />
               </div>
@@ -181,7 +204,12 @@ function Layout({ children }) {
                   type="text"
                   className="w-full p-2 border rounded"
                   value={registerData.username}
-                  onChange={(e) => setRegisterData({...registerData, username: e.target.value})}
+                  onChange={(e) =>
+                    setRegisterData({
+                      ...registerData,
+                      username: e.target.value,
+                    })
+                  }
                   required
                 />
               </div>
@@ -191,7 +219,9 @@ function Layout({ children }) {
                   type="email"
                   className="w-full p-2 border rounded"
                   value={registerData.email}
-                  onChange={(e) => setRegisterData({...registerData, email: e.target.value})}
+                  onChange={(e) =>
+                    setRegisterData({ ...registerData, email: e.target.value })
+                  }
                   required
                 />
               </div>
@@ -201,7 +231,12 @@ function Layout({ children }) {
                   type="password"
                   className="w-full p-2 border rounded"
                   value={registerData.password}
-                  onChange={(e) => setRegisterData({...registerData, password: e.target.value})}
+                  onChange={(e) =>
+                    setRegisterData({
+                      ...registerData,
+                      password: e.target.value,
+                    })
+                  }
                   required
                 />
               </div>
@@ -211,16 +246,28 @@ function Layout({ children }) {
                   type="text"
                   className="w-full p-2 border rounded"
                   value={registerData.first_name}
-                  onChange={(e) => setRegisterData({...registerData, first_name: e.target.value})}
+                  onChange={(e) =>
+                    setRegisterData({
+                      ...registerData,
+                      first_name: e.target.value,
+                    })
+                  }
                 />
               </div>
               <div className="mb-4">
-                <label className="block text-gray-700 mb-2 text-black">Last Name:</label>
+                <label className="block text-gray-700 mb-2 text-black">
+                  Last Name:
+                </label>
                 <input
                   type="text"
                   className="w-full p-2 border rounded"
                   value={registerData.last_name}
-                  onChange={(e) => setRegisterData({...registerData, last_name: e.target.value})}
+                  onChange={(e) =>
+                    setRegisterData({
+                      ...registerData,
+                      last_name: e.target.value,
+                    })
+                  }
                 />
               </div>
               <div className="flex justify-end space-x-2">
@@ -244,9 +291,7 @@ function Layout({ children }) {
       )}
 
       {/* Main Content */}
-      <main className="flex-grow">
-        {children}
-      </main>
+      <main className="flex-grow">{children}</main>
 
       {/* Footer */}
       <footer className="bg-blue-700 text-white p-4 text-center">
@@ -258,4 +303,7 @@ function Layout({ children }) {
   );
 }
 
+Layout.propTypes = {
+  children: PropTypes.node,
+};
 export default Layout;

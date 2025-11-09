@@ -19,10 +19,10 @@ function Booking() {
     const fetchFlight = async () => {
       try {
         const res = await axios.get(
-          `${import.meta.env.VITE_BACKEND_URL}/api/flights`
+          `${import.meta.env.VITE_BACKEND_URL}/api/flights`,
         );
         const found = res.data.find(
-          (f) => f.flight_number.toString() === flight_number
+          (f) => f.flight_number.toString() === flight_number,
         );
         setFlight(found);
       } catch (err) {
@@ -45,7 +45,7 @@ function Booking() {
         passenger_name: name,
         passenger_email: userEmail,
         flight_number: flight.flight_number,
-        ticket_sold: parseInt(seats, 10)
+        ticket_sold: parseInt(seats, 10),
       });
       alert('✅ Booking successful!');
       navigate('/');
@@ -113,7 +113,10 @@ function Booking() {
               value={seats}
               onChange={(e) =>
                 setSeats(
-                  Math.min(parseInt(e.target.value, 10) || 1, flight.available_seats)
+                  Math.min(
+                    parseInt(e.target.value, 10) || 1,
+                    flight.available_seats,
+                  ),
                 )
               }
               className="w-full p-3 border rounded"

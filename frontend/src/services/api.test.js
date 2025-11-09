@@ -4,7 +4,7 @@ import { describe, it, expect, vi, beforeEach } from 'vitest';
 /* 1) mock axios קודם */
 vi.mock('axios', () => {
   const instance = { get: vi.fn(), post: vi.fn() };
-  const create   = vi.fn(() => instance);
+  const create = vi.fn(() => instance);
   return { default: { create, ...instance } };
 });
 
@@ -14,7 +14,7 @@ import axios from 'axios';
 let api; // יוחזר דינמית בכל טסט
 
 beforeEach(async () => {
-  vi.resetAllMocks();          // מאפס ספירות
+  vi.resetAllMocks(); // מאפס ספירות
   // טוען מחדש את api.js => מפעיל axios.create שוב
   api = (await import('./api')).default;
 });
@@ -24,7 +24,7 @@ describe('API Service', () => {
     expect(axios.create).toHaveBeenCalledWith(
       expect.objectContaining({
         baseURL: expect.stringContaining('/api'),
-      })
+      }),
     );
   });
 

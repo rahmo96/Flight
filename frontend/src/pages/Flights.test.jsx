@@ -21,9 +21,9 @@ vi.mock('react-router-dom', async () => {
           if (param === 'destination') return 'London';
           if (param === 'date') return '2023-10-15';
           return null;
-        }
-      }
-    ]
+        },
+      },
+    ],
   };
 });
 
@@ -36,7 +36,7 @@ describe('Flights component', () => {
       departure_time: '2023-10-15T10:00:00Z',
       arrival_time: '2023-10-15T22:00:00Z',
       price: 450,
-      available_seats: 45
+      available_seats: 45,
     },
     {
       flight_number: 'FL456',
@@ -45,8 +45,8 @@ describe('Flights component', () => {
       departure_time: '2023-10-16T08:00:00Z',
       arrival_time: '2023-10-16T20:00:00Z',
       price: 520,
-      available_seats: 32
-    }
+      available_seats: 32,
+    },
   ];
 
   beforeEach(() => {
@@ -58,28 +58,27 @@ describe('Flights component', () => {
     render(
       <BrowserRouter>
         <Flights />
-      </BrowserRouter>
+      </BrowserRouter>,
     );
-    
+
     // Check loading state
     expect(screen.getByText('Loading...')).toBeInTheDocument();
-    
+
     // Wait for flights to load
     await waitFor(() => {
       expect(screen.getByText('Available Flights')).toBeInTheDocument();
       expect(screen.getAllByText(/New York ✈️ London/i)).toHaveLength(1); // במקום 2
       expect(screen.getAllByText('Book Now')).toHaveLength(1); // גם כאן
     });
-
   });
 
   test('displays flight details correctly', async () => {
     render(
       <BrowserRouter>
         <Flights />
-      </BrowserRouter>
+      </BrowserRouter>,
     );
-    
+
     await waitFor(() => {
       // Using more flexible text matching
       expect(screen.getByText(/Flight: FL123/i)).toBeInTheDocument();
@@ -91,13 +90,13 @@ describe('Flights component', () => {
   test('shows no flights message when empty', async () => {
     // Override the mock for this specific test
     axios.get.mockResolvedValueOnce({ data: [] });
-    
+
     render(
       <BrowserRouter>
         <Flights />
-      </BrowserRouter>
+      </BrowserRouter>,
     );
-    
+
     await waitFor(() => {
       expect(screen.getByText('No flights found.')).toBeInTheDocument();
     });

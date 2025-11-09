@@ -10,7 +10,7 @@ describe('Booking API', () => {
     // Reset tables
     await Booking.destroy({ where: {} });
     await Flight.destroy({ where: {} });
-    
+
     // Create test flight
     testFlight = await Flight.create({
       flight_number: 'TEST123',
@@ -18,14 +18,14 @@ describe('Booking API', () => {
       destination: 'London',
       departure_time: new Date('2023-12-01T10:00:00Z'),
       arrival_time: new Date('2023-12-01T22:00:00Z'),
-      price: 299.99
+      price: 299.99,
     });
-    
+
     // Create test booking
     await Booking.create({
       flight_number: testFlight.flight_number,
       passenger_name: 'Test User',
-      passenger_email: 'test@example.com'
+      passenger_email: 'test@example.com',
     });
   });
 
@@ -36,32 +36,27 @@ describe('Booking API', () => {
     expect(res.body[0].passenger_name).toBe('Test User');
   });
 
-
   it('should create a new booking', async () => {
     const newBooking = {
       flight_number: testFlight.flight_number,
       passenger_name: 'Another User',
-      passenger_email: 'another@example.com'
+      passenger_email: 'another@example.com',
     };
 
-    const res = await request(app)
-      .post('/api/bookings')
-      .send(newBooking);
-    
+    const res = await request(app).post('/api/bookings').send(newBooking);
+
     expect(res.statusCode).toEqual(201);
     expect(res.body.passenger_name).toBe('Another User');
   });
-
-
 
   it('should delete a booking', async () => {
     // First get all bookings to find an ID
     const allRes = await request(app).get('/api/bookings');
     const bookingId = allRes.body[0].id;
-    
+
     const res = await request(app).delete(`/api/bookings/${bookingId}`);
     expect(res.statusCode).toEqual(204);
-    
+
     // Verify it's gone
     const checkRes = await request(app).get(`/api/bookings/${bookingId}`);
     expect(checkRes.statusCode).toEqual(404);
